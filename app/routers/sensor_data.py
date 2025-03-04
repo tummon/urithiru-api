@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import Annotated, List
 from fastapi import APIRouter, Query
 
 from enum import Enum
@@ -23,12 +23,12 @@ router = APIRouter()
 fake_items_db = [{"sensor_id": "1"}, {"sensor_id": "2"}, {"sensor_id": "3"}]
 
 
-@router.get("/sensor_data")
+@router.get("/sensor-data")
 async def read_sensor_data(
-    metric: List[Metric] = Query(),
-    statistic: Statistic = Query(),
-    start: datetime | None = Query(None),
-    end: datetime | None = Query(None),
-    sensor_id: List[str] | None = Query(None),
+    metric: Annotated[List[Metric], Query()],
+    statistic: Annotated[Statistic, Query()],
+    start: Annotated[datetime | None, Query()] = None,
+    end: Annotated[datetime | None, Query()] = None,
+    sensor_id: Annotated[List[str] | None, Query(alias="sensor-id")] = None,
 ):
     return fake_items_db
