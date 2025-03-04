@@ -1,14 +1,9 @@
 from datetime import datetime
 from typing import Annotated, List
 from fastapi import APIRouter, Query
+from ..models.sensor_data_model import Metric, SensorDataCreate
 
 from enum import Enum
-
-
-class Metric(str, Enum):
-    WIND_SPEED = "wind_speed"
-    TEMPERATURE = "temp"
-    HUMIDITY = "humidity"
 
 
 class Statistic(str, Enum):
@@ -32,3 +27,8 @@ async def read_sensor_data(
     sensor_id: Annotated[List[str] | None, Query(alias="sensor-id")] = None,
 ):
     return fake_items_db
+
+
+@router.post("/sensor-data", status_code=201)
+async def create_sensor_data(sensor_data: SensorDataCreate):
+    return sensor_data.model_dump_json()
