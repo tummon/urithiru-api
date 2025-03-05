@@ -1,6 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
-from uuid import uuid4
 from pydantic import BaseModel, UUID4
 from typing import Annotated
 from fastapi import Body
@@ -20,5 +19,6 @@ class SensorDataCreate(BaseModel):
     metric: Metric
     value: float
     sensor_id: UUID4
-    timestamp: Annotated[datetime, Body(default_factory=lambda: datetime.now())]
-    reading_id: Annotated[UUID4, Body(default_factory=lambda: uuid4())]
+    timestamp: Annotated[
+        datetime, Body(default_factory=lambda: datetime.now(tz=timezone.utc))
+    ]
