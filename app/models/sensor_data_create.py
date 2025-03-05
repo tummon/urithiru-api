@@ -3,6 +3,7 @@ from enum import Enum
 from pydantic import BaseModel, UUID4
 from typing import Annotated
 from fastapi import Body
+from decimal import Decimal
 
 
 class Metric(str, Enum):
@@ -17,7 +18,7 @@ class Metric(str, Enum):
 # Handle timestamps from the future
 class SensorDataCreate(BaseModel):
     metric: Metric
-    value: float
+    value: Decimal
     sensor_id: UUID4
     timestamp: Annotated[
         datetime, Body(default_factory=lambda: datetime.now(tz=timezone.utc))

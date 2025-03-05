@@ -14,7 +14,7 @@ class SensorDataRepository:
             Item={
                 "sensor_id_metric": partition_key,
                 "timestamp": sensor_data.timestamp.isoformat(),
-                "sensor_id": sensor_data.sensor_id,
+                "sensor_id": str(sensor_data.sensor_id),
                 "metric": sensor_data.metric,
                 "value": sensor_data.value,
             }

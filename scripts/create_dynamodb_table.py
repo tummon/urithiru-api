@@ -44,10 +44,7 @@ table = dynamodb.create_table(
                 {"AttributeName": "timestamp", "KeyType": "RANGE"},
             ],
             "Projection": {
-                "ProjectionType": "INCLUDE",
-                "NonKeyAttributes": [
-                    "value",
-                ],
+                "ProjectionType": "ALL",
             },
             "ProvisionedThroughput": {"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
         }
