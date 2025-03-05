@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Self, Annotated, List
 from enum import Enum
 from pydantic import BaseModel, Field, model_validator
@@ -54,8 +54,10 @@ class SensorDataQuery(BaseModel):
     def fill_date_range(self) -> Self:
         # If no range is filled, just take the latest max range
         if self.start_time is None and self.end_time is None:
-            self.start_time = datetime.now() - timedelta(days=MAX_RANGE_LENGTH)
-            self.end_time = datetime.now()
+            self.start_time = datetime.now(tz=timezone.utc) - timedelta(
+                days=MAX_RANGE_LENGTH
+            )
+            self.end_time = datetime.now(tz=timezone.utc)
         # else if we have an end datetime with no start, we set the
         # start to the max range before the end
         elif self.start_time is None:
@@ -68,8 +70,8 @@ class SensorDataQuery(BaseModel):
             )
             self.end_time = (
                 max_range_length_after_start
-                if max_range_length_after_start < datetime.now()
-                else datetime.now()
+                if max_range_length_after_start < datetime.now(tz=timezone.utc)
+                else datetime.now(tz=timezone.utc)
             )
 
         return self
