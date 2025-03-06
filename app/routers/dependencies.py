@@ -4,6 +4,7 @@ import boto3
 from boto3.resources.base import ServiceResource
 from ..repositories.sensor_data_repo import SensorDataRepository
 from ..services.sensor_data_service import SensorDataService
+from ..config import AWS_ACCESS_KEY, AWS_ENDPOINT, AWS_REGION, AWS_SECRET_KEY
 
 
 def get_dynamodb_resource():
@@ -12,10 +13,10 @@ def get_dynamodb_resource():
     # else:
     return boto3.resource(
         "dynamodb",
-        endpoint_url="http://localhost:8000",
-        aws_access_key_id="fakeKeyId",
-        aws_secret_access_key="fakeAccessKey",
-        region_name="eu-west-1",
+        endpoint_url=AWS_ENDPOINT,
+        aws_access_key_id=AWS_ACCESS_KEY,
+        aws_secret_access_key=AWS_SECRET_KEY,
+        region_name=AWS_REGION,
     )
 
 
