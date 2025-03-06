@@ -1,19 +1,30 @@
 # Prerequisites:
 - Docker
-- Python >= 3.10
 
-# Preparation:
-Run `python3 -m venv .venv` to create a virtual environment  
-Run `pip install -r requirements.txt` to install dependencies.
-
-# Start the API (and DB if using local)
-Run `docker-compose up` to start dynamodb locally, or you can use configured AWS credentials to access in AWS.  
-
-On the initial run you will need to create the table in DynamoDB.  
-
-Run `./create_dynamodb_table.py` to create the table locally. Run `./create_dynamodb_table.py --remote` to create in your configured AWS account.  
-Run `./delete_dynamodb_table.py` to delete the table locally. Run `./delete_dynamodb_table.py --remote` to delete in your configured AWS account.  
-
-Run `fastapi dev --port 8001` to start the api. (Using Port 8001 incase local dynamodb is used which uses 8000)  
+# Start the API and DB
+Run `docker-compose up --build`
 
 Open http://localhost:8001/docs in your browser to see the OpenAPI documentation and make some requests.  
+
+You can use openapi docs page to test queries.
+
+# Running the tests
+I didn't get around to running the tests in docker, so you'll need to manually run these.
+Only tested with Python 3.13.0, but I think anything 3.10+ should be ok.
+
+```bash
+# Setup virtual env
+python3 -m venv .venv
+
+# Activate venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run pytest
+pytest
+
+# When finished deactivate the venv
+deactivate
+```
