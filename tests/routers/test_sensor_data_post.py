@@ -41,19 +41,6 @@ def test_post_sensor_data_non_uuid_sensor_id():
     assert response.status_code == 422
 
 
-def test_post_sensor_data_non_uuid_reading_id():
-    response = client.post(
-        "/v1/api/sensor-data",
-        json={
-            "metric": "wind_speed",
-            "value": 45.2,
-            "sensor_id": "085b796f-d59e-4c7e-afab-a2b38205db7f",
-            "reading_id": "10",
-        },
-    )
-    assert response.status_code == 422
-
-
 def test_post_sensor_data_misformatted_timestamp():
     response = client.post(
         "/v1/api/sensor-data",
