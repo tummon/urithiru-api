@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 COPY app/ app/
 COPY scripts/ scripts/
 EXPOSE 8001
-CMD [ "fastapi", "dev", "--port", "8001" ]
+CMD [ "fastapi", "run", "--port", "8001" ]
