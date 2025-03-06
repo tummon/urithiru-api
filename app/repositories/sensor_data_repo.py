@@ -3,10 +3,11 @@ from boto3.dynamodb.conditions import Key
 from ..models.sensor_data_create import SensorDataCreate
 from ..models.sensory_data_query import SensorDataQuery
 
+DYNAMO_DB_TABLE = "WeatherData"
 
 class SensorDataRepository:
     def __init__(self, dynamodb_resource: ServiceResource):
-        self.table = dynamodb_resource.Table("WeatherData")
+        self.table = dynamodb_resource.Table(DYNAMO_DB_TABLE)
 
     def create_sensor_data(self, sensor_data: SensorDataCreate):
         partition_key = f"{sensor_data.sensor_id}#{sensor_data.metric}"
