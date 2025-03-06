@@ -3,9 +3,6 @@ from ..models.sensor_data_create import SensorDataCreate
 from ..models.sensory_data_query import SensorDataQuery, Statistic
 from typing import List
 from decimal import Decimal
-from itertools import groupby
-from operator import itemgetter
-
 
 def apply_statistic(data: List[Decimal], statistic: Statistic):
     match statistic:
@@ -44,14 +41,18 @@ class SensorDataService:
         data = self.sensor_data_repo.query_sensor_data(sensor_data_query)
         result = {}
         # Group the data by sensor_id
-        for id_key, id_group in groupby(data, key=itemgetter("sensor_id")):
-            result[id_key] = {}
+        for d in data:
+            sensor_id = d["sensor_id"]
+            metric = d["metric"]
+            value = d["value"]
+            if sensor_id not in result:
+                result[sensor_id] = {}
+            if metric not in result[sensor_id]:
+                result[sensor_id][metric] = []
+            result[sensor_id][metric].append(value)
 
-            # Group the above groups into metric groups
-            for metric_key, metric_group in groupby(id_group, key=itemgetter("metric")):
-                # Map these into just the values so we can run the statistic on them
-                values = list(map(lambda d: d.get("value", 0), metric_group))
-                result[id_key][metric_key] = apply_statistic(
-                    values, sensor_data_query.statistic
-                )
+        for s_id, v in result.items():
+            for m, v2 in v.items():
+                result[s_id][m] = apply_statistic(v2, sensor_data_query.statistic)
+
         return result
