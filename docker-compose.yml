@@ -1,11 +1,21 @@
 
 services:
- dynamodb-local:
-   command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-   image: "amazon/dynamodb-local:latest"
-   container_name: dynamodb-local
-   ports:
-     - "8000:8000"
-   volumes:
-     - "./docker/dynamodb:/home/dynamodblocal/data"
-   working_dir: /home/dynamodblocal
+  app:
+    build: .
+    container_name: urithiru_api
+    env_file: .env
+    depends_on:
+      - dynamodb-local
+    entrypoint: ["sh", "-c", "./scripts/create_dynamodb_table.py && fastapi run app/main.py --port 8001"]
+    ports:
+      - "127.0.0.1:8001:8001"
+  
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
